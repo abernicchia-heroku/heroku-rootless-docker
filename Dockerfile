@@ -1,4 +1,5 @@
 # to make it run on macOS Docker-in-Docker (DinD) use: docker run --privileged -it --rm heroku-rootless-docker bash
+# 
 FROM heroku/heroku:24
 
 ARG ROOTLESS_USER_DIR="/home/rootlessuser"
@@ -32,6 +33,7 @@ RUN useradd -m -s /bin/bash rootlessuser && mkdir -p ${ROOTLESS_USER_DIR}
 RUN echo 'rootlessuser:100000:65536' >> /etc/subuid && \
     echo 'rootlessuser:100000:65536' >> /etc/subgid
 
+# https://docs.docker.com/engine/security/rootless/#errors-when-starting-the-docker-daemon
 RUN echo 'kernel.unprivileged_userns_clone=1' >> /etc/sysctl.conf && sysctl --system
 
 # Set the user to rootlessuser
